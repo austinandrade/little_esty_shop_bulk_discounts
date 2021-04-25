@@ -13,6 +13,5 @@ RSpec.describe 'merchant bulk discounts show' do
     expect(page).to have_content(@bulk_discount_1.name)
     expect(page).to have_content(@bulk_discount_1.percentage_discount)
     expect(page).to have_content(@bulk_discount_1.quantity_threshold)
-    expect(page).to have_content(@bulk_discount_1.merchant.name)
   end
 end
