@@ -1,0 +1,14 @@
+<h1> Edit <%= @bulk_discount.name %>: </h1>
+
+<%= form_with url: merchant_bulk_discount_path(@merchant, @bulk_discount), method: :patch, local: true do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, :value => @bulk_discount.name %>
+
+  <%= f.label :percentage_discount %>
+  <%= f.number_field :percentage_discount, max: 100, min: 1, :value => @bulk_discount.percentage_discount %>
+
+  <%= f.label :quantity_threshold %>
+  <%= f.number_field :quantity_threshold, max: 100, min: 1, :value => @bulk_discount.quantity_threshold %>
+
+  <%= f.submit :submit %>
+<% end %>

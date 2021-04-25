@@ -1,5 +1,5 @@
 class BulkDiscountsController < ApplicationController
-  before_action :find_merchant, only: [:index, :new]
+  before_action :find_merchant, only: [:index, :new, :show, :edit]
   before_action :next_3_holidays
 
   def index
@@ -7,7 +7,7 @@ class BulkDiscountsController < ApplicationController
   end
 
   def show
-    @bulk_discount = BulkDiscount.find(params[:id])
+    @bulk_discount = BulkDiscount.find(bulk_discount_params[:id])
   end
 
   def new
@@ -23,6 +23,23 @@ class BulkDiscountsController < ApplicationController
     else
       redirect_to new_merchant_bulk_discount_path(merchant)
       flash[:alert] = "Error: #{error_message(bulk_discount.errors)}"
+    end
+  end
+
+  def edit
+    @bulk_discount = BulkDiscount.find(bulk_discount_params[:id])
+  end
+
+  def update
+    bulk_discount = BulkDiscount.find(bulk_discount_params[:id])
+    merchant = Merchant.find(bulk_discount_params[:merchant_id])
+
+    if bulk_discount.update(bulk_discount_params)
+      redirect_to merchant_bulk_discount_path(merchant, bulk_discount),
+      notice: "successfully updated!"
+    else
+      redirect_to "/merchant/#{merchant.id}/bulk_discounts/#{bulk_discount.id}/edit",
+      alert: "Error: #{error_message(bulk_discount.errors)}"
     end
   end
 
