@@ -49,7 +49,7 @@ RSpec.describe 'merchant bulk discounts index' do
       click_link(@bulk_discount_1.name)
     end
 
-    expect(current_path).to eq("/merchant/#{@merchant_1.id}/bulk_discounts/#{@bulk_discount_1.id}")
+    expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @bulk_discount_1))
   end
 
   it 'displays the names of the next 3 us holidays' do
@@ -58,5 +58,12 @@ RSpec.describe 'merchant bulk discounts index' do
       expect(page).to have_content("Independence Day")
       expect(page).to have_content("Labour Day")
     end
+  end
+
+  it "displays link to create a new discount, clicks, and redirects to new page" do
+    expect(page).to have_link("Create New Discount")
+    click_link("Create New Discount")
+
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1))
   end
 end
