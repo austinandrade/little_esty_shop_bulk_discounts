@@ -1,5 +1,5 @@
 class BulkDiscountsController < ApplicationController
-  before_action :find_merchant, only: [:index]
+  before_action :find_merchant, only: [:index, :new]
   before_action :next_3_holidays
 
   def index
@@ -10,7 +10,28 @@ class BulkDiscountsController < ApplicationController
     @bulk_discount = BulkDiscount.find(params[:id])
   end
 
+  def new
+  end
+
+
+  def create
+    bulk_discount = BulkDiscount.new(bulk_discount_params)
+    merchant = Merchant.find(bulk_discount_params[:merchant_id])
+    
+    if bulk_discount.save
+      redirect_to merchant_bulk_discounts_path(merchant),
+      notice: "bulk discount successfully created!"
+    else
+      redirect_to new_merchant_bulk_discount_path(merchant)
+      flash[:alert] = "Error: #{error_message(bulk_discount.errors)}"
+    end
+  end
+
   private
+
+  def bulk_discount_params
+    params.permit(:id, :name, :percentage_discount, :quantity_threshold, :merchant_id)
+  end
 
   def find_merchant
     @merchant = Merchant.find(params[:merchant_id])

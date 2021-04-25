@@ -534,18 +534,20 @@ Then I am taken to a new page where I see a form to add a new bulk discount
 When I fill in the form with valid data
 Then I am redirected back to the bulk discount index
 And I see my new bulk discount listed
+```
+```
 Merchant Bulk Discount Delete
-```
-```
+
 As a merchant
 When I visit my bulk discounts index
 Then next to each bulk discount I see a link to delete it
 When I click this link
 Then I am redirected back to the bulk discounts index page
 And I no longer see the discount listed
+```
+```
 Merchant Bulk Discount Show
-```
-```
+
 As a merchant
 When I visit my bulk discount show page
 Then I see the bulk discount's quantity threshold and percentage discount
@@ -560,24 +562,27 @@ And I see that the discounts current attributes are pre-poluated in the form
 When I change any/all of the information and click submit
 Then I am redirected to the bulk discount's show page
 And I see that the discount's attributes have been updated
-Merchant Invoice Show Page: Total Revenue includes discounts
 ```
 
 ```
+Merchant Invoice Show Page: Total Revenue includes discounts
+
 As a merchant
 When I visit my merchant invoice show page
 Then I see that the total revenue for my merchant includes bulk discounts in the calculation
-Merchant Invoice Show Page: Link to applied discounts
 ```
 
 ```
+Merchant Invoice Show Page: Link to applied discounts
+
 As a merchant
 When I visit my merchant invoice show page
 Next to each invoice item I see a link to the show page for the bulk discount that was applied (if any)
-Admin Invoice Show Page: Total Revenue includes discounts
 ```
 
 ```
+Admin Invoice Show Page: Total Revenue includes discounts
+
 As an admin
 When I visit an admin invoice show page
 Then I see that the total revenue includes bulk discounts in the calculation
