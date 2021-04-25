@@ -51,4 +51,12 @@ RSpec.describe 'merchant bulk discounts index' do
 
     expect(current_path).to eq("/merchant/#{@merchant_1.id}/bulk_discounts/#{@bulk_discount_1.id}")
   end
+
+  it 'displays the names of the next 3 us holidays' do
+    within("#upcoming_holidays") do
+      expect(page).to have_content("Memorial Day")
+      expect(page).to have_content("Independence Day")
+      expect(page).to have_content("Labour Day")
+    end
+  end
 end
