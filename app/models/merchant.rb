@@ -30,18 +30,18 @@ class Merchant < ApplicationRecord
      items
      .joins(invoices: :transactions)
      .where('transactions.result = 1')
-     .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) as total_revenue")
+     .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) as total_revenue_without_discounts")
      .group(:id)
-     .order('total_revenue desc')
+     .order('total_revenue_without_discounts desc')
      .limit(5)
    end
 
   def self.top_merchants
     joins(invoices: [:invoice_items, :transactions])
     .where('result = ?', 1)
-    .select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue')
+    .select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue_without_discounts')
     .group(:id)
-    .order('total_revenue DESC')
+    .order('total_revenue_without_discounts DESC')
     .limit(5)
   end
 

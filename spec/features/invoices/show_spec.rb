@@ -82,7 +82,7 @@ RSpec.describe 'invoices show' do
   it "shows the total revenue for this invoice" do
     visit merchant_invoice_path(@merchant1, @invoice_1)
 
-    expect(page).to have_content(@invoice_1.total_revenue)
+    expect(page).to have_content(@invoice_1.total_revenue_without_discounts)
   end
 
   it "shows a select field to update the invoice status" do
@@ -94,6 +94,13 @@ RSpec.describe 'invoices show' do
       expect(page).to have_content("cancelled")
       expect(page).to_not have_content("in progress")
      end
+  end
+
+  it "displays total revenue including bulk discounts" do
+    visit merchant_invoice_path(@merchant1, @invoice_1)
+    expect(page).to have_content("Total Revenue including Discounts: 1234")
+
+    # Then I see that the total revenue for my merchant includes bulk discounts in the calculation
   end
 
 end
