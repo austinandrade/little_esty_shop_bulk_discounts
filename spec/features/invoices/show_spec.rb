@@ -5,6 +5,9 @@ RSpec.describe 'invoices show' do
     @merchant1 = Merchant.create!(name: 'Hair Care')
     @merchant2 = Merchant.create!(name: 'Jewelry')
 
+    @bd_1 = @merchant1.bulk_discounts.create!(name: '25 percent off 10 items', percentage_discount: 25, quantity_threshold: 10)
+    @bd_2 = @merchant1.bulk_discounts.create!(name: '50 percent off 15 items', percentage_discount: 50, quantity_threshold: 15)
+
     @item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: @merchant1.id, status: 1)
     @item_2 = Item.create!(name: "Conditioner", description: "This makes your hair shiny", unit_price: 8, merchant_id: @merchant1.id)
     @item_3 = Item.create!(name: "Brush", description: "This takes out tangles", unit_price: 5, merchant_id: @merchant1.id)
@@ -98,9 +101,7 @@ RSpec.describe 'invoices show' do
 
   it "displays total revenue including bulk discounts" do
     visit merchant_invoice_path(@merchant1, @invoice_1)
-    expect(page).to have_content("Total Revenue including Discounts: 1234")
 
-    # Then I see that the total revenue for my merchant includes bulk discounts in the calculation
+    expect(page).to have_content("Total Revenue with Discounts: #{@invoice_1.total_revenue_with_discounts}")
   end
-
 end
