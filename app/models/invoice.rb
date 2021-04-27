@@ -44,6 +44,6 @@ class Invoice < ApplicationRecord
 
   def total_revenue_with_discounts
     discounts = discount_calculation.uniq.sum(&:calculated_discount)
-    total_revenue_without_discounts - discounts
+    (total_revenue_without_discounts - discounts).to_f.round(2)
   end
 end
