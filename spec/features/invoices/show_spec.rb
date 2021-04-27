@@ -104,7 +104,7 @@ RSpec.describe 'invoices show' do
   it "displays total revenue including bulk discounts" do
     visit merchant_invoice_path(@merchant1, @invoice_1)
 
-    expect(page).to have_content("Total Revenue with Discounts: #{@invoice_1.total_revenue_with_discounts}")
+    expect(page).to have_content("Total Revenue with Discounts: $#{@invoice_1.total_revenue_with_discounts}")
   end
 
   it "displays link to bulk discount's show page if they are applied to invoice_item" do
