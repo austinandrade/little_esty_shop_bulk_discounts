@@ -54,9 +54,9 @@ describe 'Admin Invoices Index Page' do
   end
 
   it 'should display the total revenue the invoice will generate' do
-    expect(page).to have_content("Total Revenue: $#{@i1.total_revenue}")
+    expect(page).to have_content("Total Revenue: $#{@i1.total_revenue_without_discounts}")
 
-    expect(page).to_not have_content(@i2.total_revenue)
+    expect(page).to_not have_content(@i2.total_revenue_without_discounts)
   end
 
   it 'should have status as a select field that updates the invoices status' do
@@ -68,5 +68,11 @@ describe 'Admin Invoices Index Page' do
       expect(current_path).to eq(admin_invoice_path(@i1))
       expect(@i1.status).to eq('complete')
     end
+  end
+
+  it "displays the total revenue the invoice will generate including discounts" do
+    expect(page).to have_content("Total Revenue with Discounts: $#{@i1.total_revenue_with_discounts}")
+
+    expect(page).to_not have_content(@i2.total_revenue_with_discounts)
   end
 end
