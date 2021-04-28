@@ -68,8 +68,8 @@ RSpec.describe Invoice, type: :model do
         ii_2 = InvoiceItem.create!(invoice_id: invoicea.id, item_id: item_2.id, quantity: 5, unit_price: 2, status: 1)
 
         expect(invoicea.total_revenue_with_discounts).to eq(260)
-        expect(invoicea.has_discounts?(ii_1.id)).to eq(false)
-        expect(invoicea.has_discounts?(ii_2.id)).to eq(false)
+        expect(ii_1.best_qualifying_discount).to eq(nil)
+        expect(ii_2.best_qualifying_discount).to eq(nil)
       end
 
       it "test case 2" do
@@ -93,8 +93,8 @@ RSpec.describe Invoice, type: :model do
         ii_2 = InvoiceItem.create!(invoice_id: invoicea.id, item_id: item_2.id, quantity: 5, unit_price: 2, status: 1)
 
         expect(invoicea.total_revenue_with_discounts).to eq(410)
-        expect(invoicea.has_discounts?(ii_1.id)).to eq(true)
-        expect(invoicea.has_discounts?(ii_2.id)).to eq(false)
+        expect(ii_1.best_qualifying_discount).to eq(bd_1)
+        expect(ii_2.best_qualifying_discount).to eq(nil)
       end
 
       it "test case 3" do
@@ -120,8 +120,8 @@ RSpec.describe Invoice, type: :model do
         ii_2 = InvoiceItem.create!(invoice_id: invoicea.id, item_id: item_2.id, quantity: 15, unit_price: 2, status: 1)
 
         expect(invoicea.total_revenue_with_discounts).to eq(117)
-        expect(invoicea.has_discounts?(ii_1.id)).to eq(true)
-        expect(invoicea.has_discounts?(ii_2.id)).to eq(true)
+        expect(ii_1.best_qualifying_discount).to eq(bd_1)
+        expect(ii_2.best_qualifying_discount).to eq(bd_2)
       end
 
       it "test case 4" do
@@ -147,8 +147,8 @@ RSpec.describe Invoice, type: :model do
         ii_2 = InvoiceItem.create!(invoice_id: invoicea.id, item_id: item_2.id, quantity: 15, unit_price: 2, status: 1)
 
         expect(invoicea.total_revenue_with_discounts).to eq(33.6)
-        expect(invoicea.has_discounts?(ii_1.id)).to eq(true)
-        expect(invoicea.has_discounts?(ii_2.id)).to eq(true)
+        expect(ii_1.best_qualifying_discount).to eq(bd_1)
+        expect(ii_2.best_qualifying_discount).to eq(bd_1)
       end
 
       it "test case 5" do
@@ -182,33 +182,9 @@ RSpec.describe Invoice, type: :model do
         ii_3 = InvoiceItem.create!(invoice_id: invoicea.id, item_id: merchantb_item.id, quantity: 15, unit_price: 2, status: 1)
 
         expect(invoicea.total_revenue_with_discounts).to eq(60.6)
-        expect(invoicea.has_discounts?(ii_1.id)).to eq(true)
-        expect(invoicea.has_discounts?(ii_2.id)).to eq(true)
-        expect(invoicea.has_discounts?(ii_3.id)).to eq(false)
-      end
-    end
-
-    describe "#name_of_applied_discount" do
-      it "returns the name of the greatest percentage discount applied to an invoice item" do
-        expect(@invoice_1.name_of_applied_discount(@ii_1.id)).to eq(@bd_1.name)
-        expect(@invoice_1.name_of_applied_discount(@ii_2.id)).to eq(@bd_2.name)
-        expect(@invoice_1.name_of_applied_discount(@ii_3.id)).to eq(nil)
-      end
-    end
-
-    describe "#has_discounts?" do
-      it "returns true if the invoice item has discounts applied to it" do
-        expect(@invoice_1.has_discounts?(@ii_1.id)).to eq(true)
-        expect(@invoice_1.has_discounts?(@ii_2.id)).to eq(true)
-        expect(@invoice_1.has_discounts?(@ii_3.id)).to eq(false)
-      end
-    end
-
-    describe "#applied_bulk_discount" do
-      it "returns the bulk discount object that is applied to an invoice item if it has one" do
-        expect(@invoice_1.applied_bulk_discount(@ii_1.id)).to eq(@bd_1)
-        expect(@invoice_1.applied_bulk_discount(@ii_2.id)).to eq(@bd_2)
-        expect(@invoice_1.applied_bulk_discount(@ii_3.id)).to eq(nil)
+        expect(ii_1.best_qualifying_discount).to eq(bd_1)
+        expect(ii_2.best_qualifying_discount).to eq(bd_2)
+        expect(ii_3.best_qualifying_discount).to eq(nil)
       end
     end
   end

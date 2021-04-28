@@ -12,6 +12,8 @@ RSpec.describe 'merchant bulk discounts index' do
 
     @bulk_discount_5 = @merchant_2.bulk_discounts.create!(name: '10 percent off 2 items', percentage_discount: 10, quantity_threshold: 2)
 
+    @resp = Faraday.get("https://date.nager.at/Api/v2/NextPublicHolidays/US")
+    @next_3_holidays = JSON.parse(@resp.body, symbolize_names: true)[0..2]
 
     visit merchant_bulk_discounts_path(@merchant_1)
   end

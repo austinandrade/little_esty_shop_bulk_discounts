@@ -51,8 +51,8 @@
                                             <%= f.submit 'Update Invoice' %>
                                           <% end %></td><br/>
             <td style="text-align:center">
-              <% if i.invoice.has_discounts?(i.id) %>
-                <p> <%= link_to "#{i.invoice.name_of_applied_discount(i.id)}", merchant_bulk_discount_path(@merchant, i.invoice.applied_bulk_discount(i.id)) %> </p>
+              <% if i.best_qualifying_discount.present? %>
+                <p> <%= link_to "#{i.best_qualifying_discount.name}", merchant_bulk_discount_path(@merchant, i.best_qualifying_discount) %> </p>
               <% else %>
                 <p> No discount! </p>
               <% end %>
