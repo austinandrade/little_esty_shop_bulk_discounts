@@ -12,9 +12,6 @@ RSpec.describe 'merchant bulk discounts index' do
 
     @bulk_discount_5 = @merchant_2.bulk_discounts.create!(name: '10 percent off 2 items', percentage_discount: 10, quantity_threshold: 2)
 
-    @resp = Faraday.get("https://date.nager.at/Api/v2/NextPublicHolidays/US")
-    @next_3_holidays = JSON.parse(@resp.body, symbolize_names: true)[0..2]
-
     visit merchant_bulk_discounts_path(@merchant_1)
   end
 
@@ -55,10 +52,12 @@ RSpec.describe 'merchant bulk discounts index' do
   end
 
   it 'displays the names of the next 3 us holidays' do
+    next_3_holiday_names = HolidayService.new.next_3_holidays.map{|holiday| holiday[:name]}
+  
     within("#upcoming_holidays") do
-      expect(page).to have_content("Memorial Day")
-      expect(page).to have_content("Independence Day")
-      expect(page).to have_content("Labour Day")
+      expect(page).to have_content(next_3_holiday_names.first)
+      expect(page).to have_content(next_3_holiday_names.second)
+      expect(page).to have_content(next_3_holiday_names.third)
     end
   end
 
