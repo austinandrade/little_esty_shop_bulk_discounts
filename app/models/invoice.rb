@@ -22,26 +22,6 @@ class Invoice < ApplicationRecord
     .order(calculated_discount: :desc)
   end
 
-  def has_discounts?(invoice_item_id)
-    discount_calculation
-    .uniq
-    .map(&:id)
-    .include?(invoice_item_id)
-  end
-
-  def name_of_applied_discount(invoice_item_id)
-    discount_calculation
-    .where(id: invoice_item_id)
-    .uniq
-    .map(&:name)
-    .first
-  end
-
-  def applied_bulk_discount(invoice_item_id)
-    BulkDiscount.where(name: name_of_applied_discount(invoice_item_id))
-    .first
-  end
-
   def total_revenue_with_discounts
     discounts = discount_calculation.uniq.sum(&:calculated_discount)
     (total_revenue_without_discounts - discounts).to_f.round(2)
